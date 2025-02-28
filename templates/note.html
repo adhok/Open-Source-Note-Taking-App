@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ note.title }} - Notion Clone</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAiIGhlaWdodD0iMzAiIHZpZXdCb3g9IjAgMCAzMCAzMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNNSA1LjJDNSA0LjA3OTUyIDUuODk1NDMgMy4yIDcgMy4ySDIzQzI0LjEwNDYgMy4yIDI1IDQuMDc5NTIgMjUgNS4yVjI0LjhDMjUgMjUuOTIwNSAyNC4xMDQ2IDI2LjggMjMgMjYuOEg3QzUuODk1NDMgMjYuOCA1IDI1LjkyMDUgNSAyNC44VjUuMloiIGZpbGw9ImJsYWNrIi8+PHBhdGggZD0iTTkgOS4yQzkgOC42NDc3MSA5LjQ0NzcxIDguMiAxMCA4LjJIMjBDMjAuNTUyMyA4LjIgMjEgOC42NDc3MSAyMSA5LjJWMTAuMkMyMSAxMC43NTIzIDIwLjU1MjMgMTEuMiAyMCAxMS4ySDEwQzkuNDQ3NzEgMTEuMiA5IDEwLjc1MjMgOSAxMC4yVjkuMloiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTkgMTQuMkM5IDEzLjY0NzcgOS40NDc3MSAxMy4yIDEwIDEzLjJIMjBDMjAuNTUyMyAxMy4yIDIxIDEzLjY0NzcgMjEgMTQuMlYxNS4yQzIxIDE1Ljc1MjMgMjAuNTUyMyAxNi4yIDIwIDE2LjJIMTBDOS40NDc3MSAxNi4yIDkgMTUuNzUyMyA5IDE1LjJWMTQuMloiIGZpbGw9IndoaXRlIi8+PHBhdGggZD0iTTkgMTkuMkM5IDE4LjY0NzcgOS40NDc3MSAxOC4yIDEwIDE4LjJIMTVDMTUuNTUyMyAxOC4yIDE2IDE4LjY0NzcgMTYgMTkuMlYyMC4yQzE2IDIwLjc1MjMgMTUuNTUyMyAyMS4yIDE1IDIxLjJIMTBDOS40NDc3MSAyMS4yIDkgMjAuNzUyMyA5IDIwLjJWMTkuMloiIGZpbGw9IndoaXRlIi8+PC9zdmc+">
+</head>
+<body>
+    <div class="container">
+        <div class="editor-container">
+            <div class="editor-header">
+                <a href="{{ url_for('index') }}" class="back-btn">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M10.6666 4L6.66659 8L10.6666 12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Back
+                </a>
+                <input type="text" id="note-title" value="{{ note.title }}" placeholder="Untitled">
+                <button id="save-btn">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 5px;">
+                        <path d="M11.6667 12.25H2.33333C1.97971 12.25 1.64057 12.1095 1.39052 11.8595C1.14048 11.6094 1 11.2703 1 10.9167V3.08333C1 2.72971 1.14048 2.39057 1.39052 2.14052C1.64057 1.89048 1.97971 1.75 2.33333 1.75H9.33333L13 5.41667V10.9167C13 11.2703 12.8595 11.6094 12.6095 11.8595C12.3594 12.1095 12.0203 12.25 11.6667 12.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.33331 12.25V7.58333H9.66665V12.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M4.33331 1.75V5.41667H8.66665" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Save
+                </button>
+            </div>
+            <div id="editor">{{ note.content|safe }}</div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        const { Delta } = Quill.import('delta');
+    </script>
+    <script src="{{ url_for('static', filename='js/quill-image-resize.js') }}"></script>
+    <script>
+        const noteId = "{{ note.id }}";
+        const createdDate = "{{ note.created }}";
+        
+        // Initialize Quill editor
+        const toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'],
+            ['blockquote', 'code-block'],
+            [{ 'header': 1 }, { 'header': 2 }],
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            [{ 'script': 'sub'}, { 'script': 'super' }],
+            [{ 'indent': '-1'}, { 'indent': '+1' }],
+            [{ 'direction': 'rtl' }],
+            [{ 'size': ['small', false, 'large', 'huge'] }],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+            [{ 'color': [] }, { 'background': [] }],
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+            ['clean'],
+            ['link', 'image']
+        ];
+        
+        const quill = new Quill('#editor', {
+            modules: {
+                toolbar: toolbarOptions,
+                simpleImageResize: {}
+            },
+            theme: 'snow',
+            placeholder: 'Start writing...'
+        });
+        
+        // Set default width for new images
+        const originalImageHandler = quill.getModule('toolbar').handlers.image;
+        quill.getModule('toolbar').handlers.image = function() {
+            originalImageHandler.call(this, function(imageUrl) {
+                if (imageUrl) {
+                    // Create a temporary image to get the natural dimensions
+                    const tempImg = new Image();
+                    tempImg.onload = function() {
+                        // Calculate height based on 750px width while maintaining aspect ratio
+                        const aspectRatio = tempImg.naturalHeight / tempImg.naturalWidth;
+                        const width = 750;
+                        const height = Math.round(width * aspectRatio);
+                        
+                        // Insert the image with our default dimensions
+                        const range = quill.getSelection(true);
+                        quill.updateContents(new Delta()
+                            .retain(range.index)
+                            .delete(range.length)
+                            .insert({ image: imageUrl }, { width: width + 'px', height: height + 'px' })
+                        , Quill.sources.USER);
+                        quill.setSelection(range.index + 1, Quill.sources.SILENT);
+                    };
+                    tempImg.src = imageUrl;
+                }
+            });
+        };
+        
+        // Enhanced toast notification system
+        function showToast(message, type = 'default', duration = 3000) {
+            // Create or get toast container
+            let toastContainer = document.getElementById('toast-container');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.id = 'toast-container';
+                document.body.appendChild(toastContainer);
+            }
+            
+            // Create toast
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            if (type === 'success') toast.classList.add('success');
+            
+            // Add icon based on type
+            let iconSvg = '';
+            if (type === 'success') {
+                iconSvg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.33337 8L6.66671 11.3333L13.3334 4.66667" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+            }
+            
+            toast.innerHTML = iconSvg + message;
+            
+            // Add to container
+            toastContainer.appendChild(toast);
+            
+            // Remove after duration
+            setTimeout(() => {
+                toast.addEventListener('animationend', () => {
+                    if (toast.parentNode) {
+                        toastContainer.removeChild(toast);
+                    }
+                });
+                toast.style.animation = 'fadeOut 0.5s forwards';
+            }, duration);
+        }
+        
+        // Handle saving
+        document.getElementById('save-btn').addEventListener('click', function() {
+            const title = document.getElementById('note-title').value || 'Untitled';
+            const content = quill.root.innerHTML;
+            
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: noteId,
+                    title: title,
+                    content: content,
+                    created: createdDate
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Note saved successfully!', 'success');
+                }
+            });
+        });
+        
+        // Auto-save functionality
+        let lastContent = quill.root.innerHTML;
+        let lastTitle = document.getElementById('note-title').value;
+        let saveTimeout = null;
+        
+        // Function to check for changes and auto-save
+        function checkChangesAndSave() {
+            const currentContent = quill.root.innerHTML;
+            const currentTitle = document.getElementById('note-title').value;
+            
+            if (currentContent !== lastContent || currentTitle !== lastTitle) {
+                // Content has changed, save it
+                lastContent = currentContent;
+                lastTitle = currentTitle;
+                
+                // Clear any existing timeout
+                if (saveTimeout) clearTimeout(saveTimeout);
+                
+                // Set a new timeout to save after a short delay
+                saveTimeout = setTimeout(() => {
+                    fetch('/save', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            id: noteId,
+                            title: currentTitle || 'Untitled',
+                            content: currentContent,
+                            created: createdDate
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            showToast('Auto-saved', 'success', 1500);
+                        }
+                    });
+                }, 1000); // 1 second delay after changes stop
+            }
+        }
+        
+        // Listen for text changes in Quill
+        quill.on('text-change', checkChangesAndSave);
+        
+        // Listen for title changes
+        document.getElementById('note-title').addEventListener('input', checkChangesAndSave);
+        
+        // Also save periodically regardless of changes (backup)
+        setInterval(function() {
+            const title = document.getElementById('note-title').value || 'Untitled';
+            const content = quill.root.innerHTML;
+            
+            fetch('/save', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: noteId,
+                    title: title,
+                    content: content,
+                    created: createdDate
+                })
+            });
+        }, 60000); // Every minute
+    </script>
+</body>
+</html>
