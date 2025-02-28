@@ -3,7 +3,7 @@
 
 
 
-![Homepage](https://example.com/image.png)
+![Homepage](https://raw.githubusercontent.com/adhok/Open-Source-Note-Taking-App/refs/heads/main/homepage.jpg)
 
 
 
