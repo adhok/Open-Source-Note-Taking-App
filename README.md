@@ -17,4 +17,4 @@ python app.py
 ```
 This will open the link ```http://127.0.0.1:5000/``` which will allow you to play around with the note book.
 
-If you do not want to do this and if you are on windows, you can simplly go to dist/ folder and run the app.exe file.
+If you do not want to do this and if you are on windows, you can simply go to dist/ folder and run the app.exe file.
