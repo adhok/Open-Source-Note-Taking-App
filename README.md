@@ -1,6 +1,12 @@
 # Open Source Note Taking App
  This is an open source Note Taking app that is built using Flask
 
+
+
+![Homepage](https://example.com/image.png)
+
+
+
 # Running this on Python
 
  After cloning this to your local machine please do the following in terminal/command prompt in the same location of app.py.
