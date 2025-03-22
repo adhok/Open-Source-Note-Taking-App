@@ -1,12 +1,12 @@
-
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, send_file
 import os
-import sys  # Add this import
+import sys
 import json
 import uuid
 from datetime import datetime
 import base64
 import re
+import tempfile
 
 # Define the Flask app ONLY ONCE
 if getattr(sys, 'frozen', False):
@@ -18,8 +18,6 @@ else:
     # Regular development environment
     app = Flask(__name__)
 
-# REMOVE THIS LINE: app = Flask(__name__)  <- You have this duplicate definition
-
 DATA_FOLDER = 'notes_data'
 IMAGE_FOLDER = os.path.join('static', 'images')
 
@@ -27,7 +25,6 @@ IMAGE_FOLDER = os.path.join('static', 'images')
 for folder in [DATA_FOLDER, IMAGE_FOLDER]:
     if not os.path.exists(folder):
         os.makedirs(folder)
-
 
 
 @app.route('/')
@@ -126,8 +123,3 @@ if __name__ == '__main__':
     # Open the browser after a short delay
     Timer(1, open_browser).start()
     app.run(debug=False, use_reloader=False)
-
-
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
