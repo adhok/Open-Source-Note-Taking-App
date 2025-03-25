@@ -30,9 +30,9 @@ A lightweight, web-based note-taking app built with Python and Flask. Jot down y
 
 ## Usage
 - Navigate to the web interface.
-- Type a note in the input field (adjust based on your app).
-- Click "Add" (or your button name) to save it.
-- Delete or edit notes as needed (add if implemented).
+- Type a note in the input field.
+- Click "Add" to save it.
+- Delete or edit notes as needed.
 
 ## Building the Executable
 To create your own executable:
