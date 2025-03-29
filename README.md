@@ -3,7 +3,7 @@ A lightweight, web-based note-taking app built with Python and Flask. Jot down y
 
 ## Features
 - Add notes via a clean web interface.
-- Notes saved locally (currently to memory or file—specify if you've got persistence like `notes.txt`).
+- Notes saved locally
 - Responsive design with custom CSS and JS.
 - Runs as a standalone `.exe` on Windows or `.dmg` on macOS—no Python install needed!
 
@@ -50,7 +50,7 @@ To create your own executable:
 ## Future Plans
 - Adding AI capabilities to summarize highlighted text(ambitious)
 - Add categories or tags for organization.
-- Dark mode toggle in the UI.
+- Dark mode toggle in the UI(Done)
 
 ## Contributing
 Love to have your help! Fork the repo, make changes, and submit a pull request. Check the [Issues](https://github.com/adhok/Open-Source-Note-Taking-App/issues) tab for bugs or feature ideas.

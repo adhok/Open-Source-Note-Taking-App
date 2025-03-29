@@ -37,10 +37,19 @@
                     </svg>
                     PDF
                 </button>
+                <!-- Dark Mode Toggle Button -->
+                <button class="theme-toggle" aria-label="Toggle dark mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                </button>
             </div>
             <div id="editor">{{ note.content|safe }}</div>
         </div>
     </div>
+    
+    <!-- Important: Load main.js first to define the dark mode functions -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     
     <!-- Add libraries for PDF generation -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -292,6 +301,18 @@
                     }
                 }
             });
+        });
+        
+        // Handle dark mode toggle
+        document.querySelector('.theme-toggle').addEventListener('click', function() {
+            // Using the global function defined in main.js
+            toggleDarkMode();
+        });
+        
+        // Update the theme toggle icon based on current theme
+        // This ensures the right icon shows when you first load a note
+        window.addEventListener('DOMContentLoaded', function() {
+            updateThemeIcons();
         });
         
         // Auto-save functionality
