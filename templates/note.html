@@ -381,6 +381,51 @@
                 })
             });
         }, 60000); // Every minute
+
+        // Modification to add to the bottom of note.html's script section
+
+        // Ensure dark mode toggle works in the note editor page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Note page loaded, initializing dark mode toggle...');
+            
+            // Get the theme toggle button in the note editor
+            const themeToggle = document.querySelector('.theme-toggle');
+            
+            if (themeToggle) {
+                console.log('Found theme toggle button in note editor');
+                
+                // Remove any existing listeners and add a fresh one
+                const newToggle = themeToggle.cloneNode(true);
+                themeToggle.parentNode.replaceChild(newToggle, themeToggle);
+                
+                newToggle.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    console.log('Theme toggle clicked in note editor');
+                    toggleDarkMode();
+                });
+            } else {
+                console.error('Theme toggle button not found in note editor!');
+            }
+        });
+
+// Immediate execution fallback
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            console.log('Note page already loaded, initializing toggle immediately');
+            
+            setTimeout(() => {
+                const themeToggle = document.querySelector('.theme-toggle');
+                if (themeToggle) {
+                    const newToggle = themeToggle.cloneNode(true);
+                    themeToggle.parentNode.replaceChild(newToggle, themeToggle);
+                    
+                    newToggle.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        console.log('Theme toggle clicked in note editor (fallback)');
+                        toggleDarkMode();
+                    });
+                }
+            }, 200);
+        }
     </script>
 </body>
 </html>
